@@ -11,3 +11,27 @@ provider "aws" {
 data "aws_region" "current" {}
 
 data "aws_availability_zones" "available" {}
+
+module "vpc" {
+  source = "modules/vpc"
+}
+
+module "eks-cluster" {
+  source = "modules/eks-cluster"
+}
+
+module "eks-nodes" {
+  source = "modules/eks-nodes"
+}
+
+module "kubeconfig" {
+  source = "modules/config"
+}
+
+output "kubeconfig" {
+  value = "${module.config.kubeconfig}"
+}
+
+output "config-map" {
+  value = "${module.config.config-map-aws-auth}"
+}
