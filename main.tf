@@ -24,6 +24,6 @@ module "eks-nodes" {
   source = "./modules/eks-nodes"
 }
 
-module "kubeconfig" {
+module "config" {
   source = "./modules/config"
 }
