@@ -1,7 +1,20 @@
 locals {
+  config-map-aws-auth = <<CONFIGMAPAWSAUTH
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: aws-auth
+  namespace: kube-system
+data:
+  mapRoles: |
+    - rolearn: ${aws_iam_role.demo-node.arn}
+      username: system:node:{{EC2PrivateDNSName}}
+      groups:
+        - system:bootstrappers
+        - system:nodes
+CONFIGMAPAWSAUTH
+
   kubeconfig = <<KUBECONFIG
-
-
 apiVersion: v1
 clusters:
 - cluster:
@@ -29,6 +42,4 @@ users:
 KUBECONFIG
 }
 
-output "kubeconfig" {
-  value = "${local.kubeconfig}"
-}
+
