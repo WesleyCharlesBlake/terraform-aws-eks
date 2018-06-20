@@ -1,7 +1,7 @@
 output "kubeconfig" {
-  value = "${module.config.kubeconfig}"
+  value = "${module.eks.kubeconfig}"
 }
 
 output "config-map" {
-  value = "${module.config.config-map-aws-auth}"
+  value = "${module.eks.config-map-aws-auth}"
 }

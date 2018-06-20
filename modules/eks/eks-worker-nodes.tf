@@ -1,3 +1,12 @@
+#
+# EKS Worker Nodes Resources
+#  * IAM role allowing Kubernetes actions to access other AWS services
+#  * EC2 Security Group to allow networking traffic
+#  * Data source to fetch latest EKS worker AMI
+#  * AutoScaling Launch Configuration to configure worker instances
+#  * AutoScaling Group to launch worker instances
+#
+
 resource "aws_iam_role" "demo-node" {
   name = "terraform-eks-demo-node"
 
@@ -95,6 +104,7 @@ data "aws_ami" "eks-worker" {
 locals {
   demo-node-userdata = <<USERDATA
 #!/bin/bash -xe
+
 CA_CERTIFICATE_DIRECTORY=/etc/kubernetes/pki
 CA_CERTIFICATE_FILE_PATH=$CA_CERTIFICATE_DIRECTORY/ca.crt
 mkdir -p $CA_CERTIFICATE_DIRECTORY
