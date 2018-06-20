@@ -13,7 +13,24 @@ git clone git@github.com:WesleyCharlesBlake/eks-terraform.git
 cd eks-terraform
 ```
 
+> You can create a file called terraform.tfvars in the project root, to place your variables if you would like to overide the defaults.
+
+Accepted variables:
+
+1. `aws-region` | us-east-1 or us-west-2
+2. `cluster-name` | string
+
+eg:
+
+```bash
+cat terraform.tfvars
+aws-region = "us-west-2"
+cluster-name = "eks-demo"
+```
+
 ### Terraform
+
+You need to run the following commands to create the resources with Terraform:
 
 ```bash
 terraform init
@@ -24,7 +41,8 @@ terraform apply
 ### Setup kubectl
 
 Setup your `KUBECONFIG`
-```
+
+```bash
 terraform output kubeconfig ~/.kube/eks-cluster
 export KUBECONFIG ~/.kube/eks-cluster
 ```
