@@ -28,6 +28,17 @@ aws-region = "us-west-2"
 cluster-name = "eks-demo"
 ```
 
+## Remote Terraform Module
+
+You can also reference this module in your Terraform config remotely as shown below:
+
+```bash
+cat main.tf
+module "eks" {
+  source = "github.com/WesleyCharlesBlake/eks-terraform//modules/eks"
+}
+```
+
 ### Terraform
 
 You need to run the following commands to create the resources with Terraform:
