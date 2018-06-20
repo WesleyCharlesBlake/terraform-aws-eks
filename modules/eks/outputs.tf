@@ -1,9 +1,11 @@
-terraform {
-  required_version = ">= 0.11.5"
-}
+#
+# Outputs
+#
 
 locals {
   config-map-aws-auth = <<CONFIGMAPAWSAUTH
+
+
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -19,6 +21,8 @@ data:
 CONFIGMAPAWSAUTH
 
   kubeconfig = <<KUBECONFIG
+
+
 apiVersion: v1
 clusters:
 - cluster:
@@ -44,4 +48,12 @@ users:
         - "-i"
         - "${var.cluster-name}"
 KUBECONFIG
+}
+
+output "config-map-aws-auth" {
+  value = "${local.config-map-aws-auth}"
+}
+
+output "kubeconfig" {
+  value = "${local.kubeconfig}"
 }

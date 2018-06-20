@@ -1,3 +1,10 @@
+#
+# EKS Cluster Resources
+#  * IAM Role to allow EKS service to manage other AWS services
+#  * EC2 Security Group to allow networking traffic with EKS cluster
+#  * EKS Cluster
+#
+
 resource "aws_iam_role" "demo-cluster" {
   name = "terraform-eks-demo-cluster"
 
