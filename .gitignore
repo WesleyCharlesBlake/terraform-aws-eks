@@ -7,3 +7,5 @@
 
 # .tfvars files
 *.tfvars
+
+config-map-aws-auth.yaml
