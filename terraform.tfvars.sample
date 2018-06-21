@@ -1,2 +1,0 @@
-aws-region = "us-west-2"
-cluster-name = "eks-demo"
