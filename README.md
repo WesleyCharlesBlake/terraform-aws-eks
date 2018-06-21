@@ -13,7 +13,7 @@ git clone git@github.com:WesleyCharlesBlake/eks-terraform.git
 cd eks-terraform
 ```
 
-> You can create a file called terraform.tfvars in the project root, to place your variables if you would like to overide the defaults.
+> You can create a file called terraform.tfvars in the project root, to place your variables if you would like to over-ride the defaults.
 
 Accepted variables:
 
@@ -23,9 +23,15 @@ Accepted variables:
 eg:
 
 ```bash
-cat terraform.tfvars
+# file: terraform.tfvars
 aws-region = "us-west-2"
-cluster-name = "eks-demo"
+cluster-name = "your-eks-cluster-name"
+```
+
+Or you can can pass in the variables to terraform as shown:
+
+```bash
+terraform plan --var "cluster-name=your-eks-cluster-name"
 ```
 
 ## Remote Terraform Module
@@ -33,9 +39,11 @@ cluster-name = "eks-demo"
 You can also reference this module in your Terraform config remotely as shown below:
 
 ```bash
-cat main.tf
+#file: main.tf
 module "eks" {
   source = "github.com/WesleyCharlesBlake/eks-terraform//modules/eks"
+  cluster-name = "${var.cluster-name}"
+  aws-region   = "${var.aws-region}"
 }
 ```
 
@@ -48,6 +56,8 @@ terraform init
 terraform plan
 terraform apply
 ```
+
+> TIP: you should save the plan state `terraform plan -out terraform.tfstate` or even better yet, setup [remote storage](https://www.terraform.io/docs/state/remote.html) for Terraform state. You can store state in an [S3 backend](https://www.terraform.io/docs/backends/types/s3.html), with locking via DynamoDB, to 
 
 ### Setup kubectl
 
