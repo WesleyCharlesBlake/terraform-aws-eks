@@ -61,7 +61,7 @@ You can use this module from the Terraform registry as a remote source:
 
 ```bash
 module "module" {
-  source  = "WesleyCharlesBlake/module/eks"
+  source  = "WesleyCharlesBlake/eks/aws"
   version = "1.0.0"
 
   cluster-name       = "${var.cluster-name}"
