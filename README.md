@@ -65,15 +65,15 @@ terraform plan
 terraform apply
 ```
 
-> TIP: you should save the plan state `terraform plan -out terraform.tfstate` or even better yet, setup [remote storage](https://www.terraform.io/docs/state/remote.html) for Terraform state. You can store state in an [S3 backend](https://www.terraform.io/docs/backends/types/s3.html), with locking via DynamoDB, to 
+> TIP: you should save the plan state `terraform plan -out sometfstate` or even better yet, setup [remote storage](https://www.terraform.io/docs/state/remote.html) for Terraform state. You can store state in an [S3 backend](https://www.terraform.io/docs/backends/types/s3.html), with locking via DynamoDB
 
 ### Setup kubectl
 
 Setup your `KUBECONFIG`
 
 ```bash
-terraform output kubeconfig ~/.kube/eks-cluster
-export KUBECONFIG ~/.kube/eks-cluster
+terraform output kubeconfig > ~/.kube/eks-cluster
+export KUBECONFIG=~/.kube/eks-cluster
 ```
 
 ### Authorize worker nodes
