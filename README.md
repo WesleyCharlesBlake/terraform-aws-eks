@@ -1,10 +1,18 @@
 # eks-terraform
 Deploy a full EKS cluster with Terraform
 
-## Configuration
+## What does resources are created:
 
-NOTE: This full configuration utilizes the [Terraform http provider](https://www.terraform.io/docs/providers/http/index.html) to call out to icanhazip.com to determine your local workstation external IP for easily configuring EC2 Security Group access to the Kubernetes master servers. Feel free to replace this as necessary.
-
+1. VPC
+2. Internet Gateway (IGW)
+3. Public and Private Subnets
+4. Security Groups, Route Tables and Route Table Associations
+5. IAM roles, instance profiles and policies
+6. An EKS Cluster
+7. Autoscaling group and Launch Configuration
+8. Worker Nodes in a private Subnet
+9. The ConfigMap required to register Nodes with EKS
+10. KUBECONFIG file to authenticate kubectl using the heptio authenticator aws binary
 
 ## How to use this example:
 
