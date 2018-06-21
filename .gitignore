@@ -4,6 +4,7 @@
 # .tfstate files
 *.tfstate
 *.tfstate.*
+eks-state
 
 # .tfvars files
 *.tfvars
