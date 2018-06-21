@@ -1,12 +1,7 @@
-#
 # EKS Cluster Resources
-#  * IAM Role to allow EKS service to manage other AWS services
-#  * EC2 Security Group to allow networking traffic with EKS cluster
-#  * EKS Cluster
-#
 
 resource "aws_iam_role" "cluster" {
-  name = "terraform-eks-cluster"
+  name = "${var.cluster-name}-eks-cluster-role"
 
   assume_role_policy = <<POLICY
 {
@@ -35,7 +30,7 @@ resource "aws_iam_role_policy_attachment" "cluster-AmazonEKSServicePolicy" {
 }
 
 resource "aws_security_group" "cluster" {
-  name        = "terraform-eks-cluster"
+  name        = "${var.cluster-name}-eks-cluster-sg"
   description = "Cluster communication with worker nodes"
   vpc_id      = "${aws_vpc.eks.id}"
 
@@ -47,7 +42,7 @@ resource "aws_security_group" "cluster" {
   }
 
   tags {
-    Name = "terraform-eks"
+    Name = "${var.cluster-name}-eks-cluster-sg"
   }
 }
 

@@ -1,10 +1,6 @@
 #
 # VPC Resources
-#  * VPC
-#  * Subnets
-#  * Internet Gateway
-#  * Route Table
-#
+
 variable cluster-name {}
 
 variable "aws-region" {}
@@ -14,7 +10,7 @@ resource "aws_vpc" "eks" {
 
   tags = "${
     map(
-     "Name", "terraform-eks-node",
+     "Name", "${var.cluster-name}-eks-vpc",
      "kubernetes.io/cluster/${var.cluster-name}", "shared",
     )
   }"
@@ -29,7 +25,7 @@ resource "aws_subnet" "eks" {
 
   tags = "${
     map(
-     "Name", "terraform-eks-node",
+     "Name", "${var.cluster-name}-eks",
      "kubernetes.io/cluster/${var.cluster-name}", "shared",
     )
   }"
@@ -39,7 +35,7 @@ resource "aws_internet_gateway" "eks" {
   vpc_id = "${aws_vpc.eks.id}"
 
   tags {
-    Name = "terraform-eks-eks"
+    Name = "${var.cluster-name}-eks-igw"
   }
 }
 
