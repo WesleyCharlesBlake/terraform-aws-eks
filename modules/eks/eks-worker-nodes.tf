@@ -129,7 +129,7 @@ resource "aws_launch_configuration" "eks" {
   iam_instance_profile        = "${aws_iam_instance_profile.node.name}"
   image_id                    = "${data.aws_ami.eks-worker-ami.id}"
   instance_type               = "${var.node-instance-type}"
-  name_prefix                 = "${var.cluster-name}-eks"
+  name_prefix                 = "${var.cluster-name}-eks-"
   security_groups             = ["${aws_security_group.node.id}"]
   user_data_base64            = "${base64encode(local.node-userdata)}"
 
@@ -148,7 +148,7 @@ resource "aws_autoscaling_group" "eks" {
 
   tag {
     key                 = "Name"
-    value               = "${var.cluster-name}-eks-asg"
+    value               = "${var.cluster-name}-eks-node"
     propagate_at_launch = true
   }
 
