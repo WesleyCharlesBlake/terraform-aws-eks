@@ -5,6 +5,9 @@
 #  * Internet Gateway
 #  * Route Table
 #
+variable cluster-name {}
+
+variable "aws-region" {}
 
 resource "aws_vpc" "eks" {
   cidr_block = "10.0.0.0/16"
