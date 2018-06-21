@@ -1,5 +1,6 @@
-# eks-terraform
-Deploy a full EKS cluster with Terraform
+# terraform-aws-eks
+
+Deploy a full AWS EKS cluster with Terraform
 
 ## What does resources are created:
 
@@ -23,7 +24,7 @@ cd eks-terraform
 
 ## Configuration
 
-You can configure you config with the following variables:
+You can configure you config with the following input variables:
 
 |          Name                      |                       Description                               |                         Default                          |
 |------------------------------------|-----------------------------------------------------------------|----------------------------------------------------------|
@@ -35,25 +36,6 @@ You can configure you config with the following variables:
 | `min-size`                         | Autoscaling Minimum node capacity                               | `1`                                                      |
 
 > You can create a file called terraform.tfvars in the project root, to place your variables if you would like to over-ride the defaults.
-
-Accepted variables:
-
-1. `aws-region` | us-east-1 or us-west-2
-2. `cluster-name` | string
-
-eg:
-
-```bash
-# file: terraform.tfvars
-aws-region = "us-west-2"
-cluster-name = "your-eks-cluster-name"
-```
-
-Or you can can pass in the variables to terraform as shown:
-
-```bash
-terraform plan --var "cluster-name=your-eks-cluster-name"
-```
 
 ## Remote Terraform Module
 
