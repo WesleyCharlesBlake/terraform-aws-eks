@@ -57,6 +57,22 @@ terraform plan --var "cluster-name=your-eks-cluster-name"
 
 ## Remote Terraform Module
 
+You can use this module from the Terraform registry as a remote source:
+
+```bash
+module "module" {
+  source  = "WesleyCharlesBlake/module/eks"
+  version = "1.0.0"
+
+  cluster-name       = "${var.cluster-name}"
+  aws-region         = "${var.aws-region}"
+  node-instance-type = "${var.node-instance-type}"
+  desired-capacity   = "${var.desired-capacity}"
+  max-size           = "${var.max-size}"
+  min-size           = "${var.min-size}"
+}
+```
+
 You can also reference this module in your Terraform config remotely as shown below:
 
 ```bash
