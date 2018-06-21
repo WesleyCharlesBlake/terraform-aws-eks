@@ -1,14 +1,12 @@
-#
 # EKS Worker Nodes Resources
-#  * IAM role allowing Kubernetes actions to access other AWS services
-#  * EC2 Security Group to allow networking traffic
-#  * Data source to fetch latest EKS worker AMI
-#  * AutoScaling Launch Configuration to configure worker instances
-#  * AutoScaling Group to launch worker instances
-#
+
+variable node-instance-type {}
+variable "desired-capacity" {}
+variable "max-size" {}
+variable "min-size" {}
 
 resource "aws_iam_role" "node" {
-  name = "terraform-eks-node"
+  name = "${var.cluster-name}-eks-node-role"
 
   assume_role_policy = <<POLICY
 {
@@ -42,12 +40,12 @@ resource "aws_iam_role_policy_attachment" "node-AmazonEC2ContainerRegistryReadOn
 }
 
 resource "aws_iam_instance_profile" "node" {
-  name = "terraform-eks"
+  name = "${var.cluster-name}-eks-node-instance-profile"
   role = "${aws_iam_role.node.name}"
 }
 
 resource "aws_security_group" "node" {
-  name        = "terraform-eks-node"
+  name        = "${var.cluster-name}-eks-node-sg"
   description = "Security group for all nodes in the cluster"
   vpc_id      = "${aws_vpc.eks.id}"
 
@@ -60,7 +58,7 @@ resource "aws_security_group" "node" {
 
   tags = "${
     map(
-     "Name", "terraform-eks-node",
+     "Name", "${var.cluster-name}-eks-node-sg",
      "kubernetes.io/cluster/${var.cluster-name}", "owned",
     )
   }"
@@ -86,7 +84,7 @@ resource "aws_security_group_rule" "node-ingress-cluster" {
   type                     = "ingress"
 }
 
-data "aws_ami" "eks-worker" {
+data "aws_ami" "eks-worker-ami" {
   filter {
     name   = "name"
     values = ["eks-worker-*"]
@@ -129,9 +127,9 @@ USERDATA
 resource "aws_launch_configuration" "eks" {
   associate_public_ip_address = true
   iam_instance_profile        = "${aws_iam_instance_profile.node.name}"
-  image_id                    = "${data.aws_ami.eks-worker.id}"
-  instance_type               = "m4.large"
-  name_prefix                 = "terraform-eks"
+  image_id                    = "${data.aws_ami.eks-worker-ami.id}"
+  instance_type               = "${var.node-instance-type}"
+  name_prefix                 = "${var.cluster-name}-eks"
   security_groups             = ["${aws_security_group.node.id}"]
   user_data_base64            = "${base64encode(local.node-userdata)}"
 
@@ -141,16 +139,16 @@ resource "aws_launch_configuration" "eks" {
 }
 
 resource "aws_autoscaling_group" "eks" {
-  desired_capacity     = 2
+  desired_capacity     = "${var.desired-capacity}"
   launch_configuration = "${aws_launch_configuration.eks.id}"
-  max_size             = 2
-  min_size             = 1
-  name                 = "terraform-eks"
+  max_size             = "${var.max-size}"
+  min_size             = "${var.min-size}"
+  name                 = "${var.cluster-name}-eks-asg"
   vpc_zone_identifier  = ["${aws_subnet.eks.*.id}"]
 
   tag {
     key                 = "Name"
-    value               = "terraform-eks"
+    value               = "${var.cluster-name}-eks-asg"
     propagate_at_launch = true
   }
 

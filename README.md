@@ -21,6 +21,19 @@ git clone git@github.com:WesleyCharlesBlake/eks-terraform.git
 cd eks-terraform
 ```
 
+## Configuration
+
+You can configure you config with the following variables:
+
+|          Name                      |                       Description                               |                         Default                          |
+|------------------------------------|-----------------------------------------------------------------|----------------------------------------------------------|
+| `cluster-name`                     | The name of your EKS Cluster                                    | `my-cluster`                                             |
+| `aws-region`                       | The AWS Region to deploy EKS                                    | `us-west-2`                                              |
+| `node-instance-type`               | Worker Node EC2 instance type                                   | `m4.large`                                               |
+| `desired-capacity`                 | Autoscaling Desired node capacity                               | `2`                                                      |
+| `max-size`                         | Autoscaling Maximum node capacity                               | `5`                                                      |
+| `min-size`                         | Autoscaling Minimum node capacity                               | `1`                                                      |
+
 > You can create a file called terraform.tfvars in the project root, to place your variables if you would like to over-ride the defaults.
 
 Accepted variables:
@@ -65,7 +78,7 @@ terraform plan
 terraform apply
 ```
 
-> TIP: you should save the plan state `terraform plan -out sometfstate` or even better yet, setup [remote storage](https://www.terraform.io/docs/state/remote.html) for Terraform state. You can store state in an [S3 backend](https://www.terraform.io/docs/backends/types/s3.html), with locking via DynamoDB
+> TIP: you should save the plan state `terraform plan -out eks-state` or even better yet, setup [remote storage](https://www.terraform.io/docs/state/remote.html) for Terraform state. You can store state in an [S3 backend](https://www.terraform.io/docs/backends/types/s3.html), with locking via DynamoDB
 
 ### Setup kubectl
 
