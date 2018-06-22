@@ -2,7 +2,7 @@
 
 Deploy a full AWS EKS cluster with Terraform
 
-## What does resources are created:
+## What resources are created
 
 1. VPC
 2. Internet Gateway (IGW)
@@ -14,13 +14,6 @@ Deploy a full AWS EKS cluster with Terraform
 8. Worker Nodes in a private Subnet
 9. The ConfigMap required to register Nodes with EKS
 10. KUBECONFIG file to authenticate kubectl using the heptio authenticator aws binary
-
-## How to use this example:
-
-```bash
-git clone git@github.com:WesleyCharlesBlake/eks-terraform.git
-cd eks-terraform
-```
 
 ## Configuration
 
@@ -37,6 +30,13 @@ You can configure you config with the following input variables:
 
 > You can create a file called terraform.tfvars in the project root, to place your variables if you would like to over-ride the defaults.
 
+## How to use this example
+
+```bash
+git clone git@github.com:WesleyCharlesBlake/terraform-aws-eks.git
+cd terraform-aws-eks
+```
+
 ## Remote Terraform Module
 
 You can use this module from the Terraform registry as a remote source:
@@ -44,7 +44,7 @@ You can use this module from the Terraform registry as a remote source:
 ```bash
 module "module" {
   source  = "WesleyCharlesBlake/eks/aws"
-  version = "1.0.0"
+  version = "1.0.3"
 
   cluster-name       = "${var.cluster-name}"
   aws-region         = "${var.aws-region}"
@@ -52,17 +52,6 @@ module "module" {
   desired-capacity   = "${var.desired-capacity}"
   max-size           = "${var.max-size}"
   min-size           = "${var.min-size}"
-}
-```
-
-You can also reference this module in your Terraform config remotely as shown below:
-
-```bash
-#file: main.tf
-module "eks" {
-  source = "github.com/WesleyCharlesBlake/eks-terraform//modules/eks"
-  cluster-name = "${var.cluster-name}"
-  aws-region   = "${var.aws-region}"
 }
 ```
 
