@@ -8,4 +8,5 @@ module "eks" {
   desired-capacity   = "${var.desired-capacity}"
   max-size           = "${var.max-size}"
   min-size           = "${var.min-size}"
+  vpc-subnet-cidr    = "${var.vpc-subnet-cidr}"
 }

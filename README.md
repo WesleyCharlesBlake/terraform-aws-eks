@@ -19,14 +19,16 @@ Deploy a full AWS EKS cluster with Terraform
 
 You can configure you config with the following input variables:
 
-|          Name                      |                       Description                               |                         Default                          |
-|------------------------------------|-----------------------------------------------------------------|----------------------------------------------------------|
-| `cluster-name`                     | The name of your EKS Cluster                                    | `my-cluster`                                             |
-| `aws-region`                       | The AWS Region to deploy EKS                                    | `us-west-2`                                              |
-| `node-instance-type`               | Worker Node EC2 instance type                                   | `m4.large`                                               |
-| `desired-capacity`                 | Autoscaling Desired node capacity                               | `2`                                                      |
-| `max-size`                         | Autoscaling Maximum node capacity                               | `5`                                                      |
-| `min-size`                         | Autoscaling Minimum node capacity                               | `1`                                                      |
+| Name                 | Description                       | Default       |
+| -------------------- | --------------------------------- | ------------- |
+| `cluster-name`       | The name of your EKS Cluster      | `my-cluster`  |
+| `aws-region`         | The AWS Region to deploy EKS      | `us-west-2`   |
+| `node-instance-type` | Worker Node EC2 instance type     | `m4.large`    |
+| `desired-capacity`   | Autoscaling Desired node capacity | `2`           |
+| `max-size`           | Autoscaling Maximum node capacity | `5`           |
+| `min-size`           | Autoscaling Minimum node capacity | `1`           |
+| `vpc-subnet-cidr`    | Subnet CIDR                       | `10.0.0.0/16` |
+
 
 > You can create a file called terraform.tfvars in the project root, to place your variables if you would like to over-ride the defaults.
 
