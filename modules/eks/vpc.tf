@@ -4,9 +4,10 @@
 variable cluster-name {}
 
 variable "aws-region" {}
+variable "vpc-subnet-cidr" {}
 
 resource "aws_vpc" "eks" {
-  cidr_block = "10.0.0.0/16"
+  cidr_block = "${var.vpc-subnet-cidr}"
 
   tags = "${
     map(
@@ -20,7 +21,7 @@ resource "aws_subnet" "eks" {
   count = 2
 
   availability_zone = "${data.aws_availability_zones.available.names[count.index]}"
-  cidr_block        = "10.0.${count.index}.0/24"
+  cidr_block        = "${cidrsubnet(var.vpc-subnet-cidr, 8, count.index )}"
   vpc_id            = "${aws_vpc.eks.id}"
 
   tags = "${
