@@ -58,6 +58,76 @@ module "module" {
 }
 ```
 
+### IAM
+
+The AWS credentials must be associated with a user having at least the following AWS managed IAM policies
+
+* IAMFullAccess
+* AutoScalingFullAccess
+* AmazonEKSClusterPolicy
+* AmazonEKSWorkerNodePolicy
+* AmazonVPCFullAccess
+* AmazonEKSServicePolicy
+* AmazonEKS_CNI_Policy
+
+In addition, you will need to create the following managed policies
+
+*EC2*
+
+```
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "sts:DecodeAuthorizationMessage",
+                "ec2:DescribeRegions",
+                "ec2:DescribeInstances",
+                "ec2:DescribeImages",
+                "ec2:DescribeKeyPairs",
+                "ec2:DescribeSecurityGroups",
+                "ec2:CreateSecurityGroup",
+                "ec2:DeleteSecurityGroup",
+                "ec2:DescribeAvailabilityZones",
+                "ec2:RunInstances",
+                "ec2:TerminateInstances",
+                "ec2:StopInstances",
+                "ec2:StartInstances",
+                "ec2:ImportKeyPair",
+                "ec2:DeleteKeyPair",
+                "ec2:CreateKeyPair",
+                "ec2:AuthorizeSecurityGroupIngress",
+                "ec2:AuthorizeSecurityGroupEgress",
+                "ec2:RevokeSecurityGroupEgress",
+                "ec2:RevokeSecurityGroupIngress",
+                "ec2:CreateTags",
+                "ec2:DescribeTags",
+                "ec2:DeleteTags"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
+```
+
+*EKS*
+
+```
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "eks:*"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
+```
+
 ### Terraform
 
 You need to run the following commands to create the resources with Terraform:
