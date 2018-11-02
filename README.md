@@ -58,6 +58,38 @@ module "module" {
 }
 ```
 
+### IAM
+
+The AWS credentials must be associated with a user having at least the following AWS managed IAM policies
+
+* IAMFullAccess
+* AutoScalingFullAccess
+* AmazonEKSClusterPolicy
+* AmazonEKSWorkerNodePolicy
+* AmazonVPCFullAccess
+* AmazonEKSServicePolicy
+* AmazonEKS_CNI_Policy
+* AmazonEC2FullAccess
+
+In addition, you will need to create the following managed policies
+
+*EKS*
+
+```
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "eks:*"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
+```
+
 ### Terraform
 
 You need to run the following commands to create the resources with Terraform:
