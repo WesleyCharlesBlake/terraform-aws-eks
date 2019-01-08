@@ -1,5 +1,7 @@
 # EKS Worker Nodes Resources
 
+variable "k8s-version" {}
+
 variable node-instance-type {}
 variable "desired-capacity" {}
 variable "max-size" {}
@@ -87,7 +89,7 @@ resource "aws_security_group_rule" "node-ingress-cluster" {
 data "aws_ami" "eks-worker-ami" {
   filter {
     name   = "name"
-    values = ["eks-worker-*"]
+    values = ["amazon-eks-node-${var.k8s-version}-*"]
   }
 
   most_recent = true
