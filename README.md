@@ -20,9 +20,10 @@ Deploy a full AWS EKS cluster with Terraform
 You can configure you config with the following input variables:
 
 | Name                 | Description                       | Default       |
-| -------------------- | --------------------------------- | ------------- |
+|----------------------|-----------------------------------|---------------|
 | `cluster-name`       | The name of your EKS Cluster      | `my-cluster`  |
 | `aws-region`         | The AWS Region to deploy EKS      | `us-west-2`   |
+| `k8s-version`        | The desired K8s version to launch | `1.11`        |
 | `node-instance-type` | Worker Node EC2 instance type     | `m4.large`    |
 | `desired-capacity`   | Autoscaling Desired node capacity | `2`           |
 | `max-size`           | Autoscaling Maximum node capacity | `5`           |
@@ -46,10 +47,11 @@ You can use this module from the Terraform registry as a remote source:
 ```bash
 module "module" {
   source  = "WesleyCharlesBlake/eks/aws"
-  version = "1.0.4"
+  version = "1.0.5"
 
   cluster-name       = "${var.cluster-name}"
   aws-region         = "${var.aws-region}"
+  k8s-version        = "${var.k8s-version}"
   node-instance-type = "${var.node-instance-type}"
   desired-capacity   = "${var.desired-capacity}"
   max-size           = "${var.max-size}"
