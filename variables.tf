@@ -12,11 +12,18 @@ variable "aws-region" {
   description = "The AWS Region to deploy EKS"
 }
 
+variable "k8s-version" {
+  default     = "1.11"
+  type        = "string"
+  description = "Required K8s version"
+}
+
 variable "vpc-subnet-cidr" {
   default     = "10.0.0.0/16"
   type        = "string"
   description = "The VPC Subnet CIDR"
 }
+
 variable "node-instance-type" {
   default     = "m4.large"
   type        = "string"
