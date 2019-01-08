@@ -1,0 +1,17 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: wesleycharlesblake/devops-tools
+
+    steps:
+      - checkout
+      - run:
+          name: Init
+          command: terraform init
+      - run:
+          name: Validate configs
+          command: terraform validate
+      - run:
+          name: Run Plan
+          command: terraform plan
