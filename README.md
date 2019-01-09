@@ -1,7 +1,7 @@
 # terraform-aws-eks
 
 [![CircleCI](https://circleci.com/gh/WesleyCharlesBlake/terraform-aws-eks.svg?style=svg)](https://circleci.com/gh/WesleyCharlesBlake/terraform-aws-eks)
-![TerraformRefigistry](https://img.shields.io/badge/Terraform-terraform%20aws%20eks-blue.svg)
+[![TerraformRefigistry](https://img.shields.io/badge/Terraform%20Registry-v1.0.5-blue.svg)](https://registry.terraform.io/modules/WesleyCharlesBlake/eks/aws/)
 
 
 Deploy a full AWS EKS cluster with Terraform
