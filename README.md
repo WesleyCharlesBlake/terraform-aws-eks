@@ -1,5 +1,7 @@
 # terraform-aws-eks
 
+[![CircleCI](https://circleci.com/gh/WesleyCharlesBlake/terraform-aws-eks.svg?style=svg)](https://circleci.com/gh/WesleyCharlesBlake/terraform-aws-eks)
+
 Deploy a full AWS EKS cluster with Terraform
 
 ## What resources are created
