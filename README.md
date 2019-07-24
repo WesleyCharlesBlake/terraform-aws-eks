@@ -23,17 +23,20 @@ Deploy a full AWS EKS cluster with Terraform
 
 You can configure you config with the following input variables:
 
-| Name                 | Description                       | Default       |
-|----------------------|-----------------------------------|---------------|
-| `cluster-name`       | The name of your EKS Cluster      | `my-cluster`  |
-| `aws-region`         | The AWS Region to deploy EKS      | `us-west-2`   |
-| `k8s-version`        | The desired K8s version to launch | `1.11`        |
-| `node-instance-type` | Worker Node EC2 instance type     | `m4.large`    |
-| `desired-capacity`   | Autoscaling Desired node capacity | `2`           |
-| `max-size`           | Autoscaling Maximum node capacity | `5`           |
-| `min-size`           | Autoscaling Minimum node capacity | `1`           |
-| `vpc-subnet-cidr`    | Subnet CIDR                       | `10.0.0.0/16` |
-
+| Name                  | Description                       | Default                                                               |
+| --------------------- | --------------------------------- | --------------------------------------------------------------------- |
+| `cluster-name`        | The name of your EKS Cluster      | `eks-cluster`                                                         |
+| `aws-region`          | The AWS Region to deploy EKS      | `us-east-1`                                                           |
+| `k8s-version`         | The desired K8s version to launch | `1.13`                                                                |
+| `node-instance-type`  | Worker Node EC2 instance type     | `m4.large`                                                            |
+| `desired-capacity`    | Autoscaling Desired node capacity | `2`                                                                   |
+| `max-size`            | Autoscaling Maximum node capacity | `5`                                                                   |
+| `min-size`            | Autoscaling Minimum node capacity | `1`                                                                   |
+| `vpc-subnet-cidr`     | Subnet CIDR                       | `10.0.0.0/16`                                                         |
+| `private-subnet-cidr` | Private Subnet CIDR               | `["10.0.0.0/19", "10.0.32.0/19", "10.0.64.0/19"]`                     |
+| `public-subnet-cidr`  | Public Subnet CIDR                | `["10.0.128.0/20", "10.0.144.0/20", "10.0.160.0/20"]`                 |
+| `db-subnet-cidr`      | DB/Spare Subnet CIDR              | `["10.0.192.0/21", "10.0.200.0/21", "10.0.208.0/21"] `                |
+| `eks-cw-logging`      | EKS Logging Components            | `["api", "audit", "authenticator", "controllerManager", "scheduler"]` |
 
 > You can create a file called terraform.tfvars in the project root, to place your variables if you would like to over-ride the defaults.
 
@@ -46,22 +49,30 @@ cd terraform-aws-eks
 
 ## Remote Terraform Module
 
+> **NOTE** use `version = "2.0.0"` with terraform `0.12.x >` and `version = 1.0.4` with terraform `< 0.11x`
+
 You can use this module from the Terraform registry as a remote source:
 
 ```bash
 module "module" {
   source  = "WesleyCharlesBlake/eks/aws"
-  version = "1.0.6"
+  version = "2.0.0"
 
-  cluster-name       = "${var.cluster-name}"
-  aws-region         = "${var.aws-region}"
-  k8s-version        = "${var.k8s-version}"
-  node-instance-type = "${var.node-instance-type}"
-  desired-capacity   = "${var.desired-capacity}"
-  max-size           = "${var.max-size}"
-  min-size           = "${var.min-size}"
-  vpc-subnet-cidr    = "${var.vpc-subnet-cidr}"
+  aws-region          = var.aws-region
+  availability-zones  = var.availability-zones
+  cluster-name        = var.cluster-name
+  k8s-version         = var.k8s-version
+  node-instance-type  = var.node-instance-type
+  desired-capacity    = var.desired-capacity
+  max-size            = var.max-size
+  min-size            = var.min-size
+  vpc-subnet-cidr     = var.vpc-subnet-cidr
+  private-subnet-cidr = var.private-subnet-cidr
+  public-subnet-cidr  = var.public-subnet-cidr
+  db-subnet-cidr      = var.db-subnet-cidr
+  eks-cw-logging      = var.eks-cw-logging
 }
+
 ```
 
 ### IAM
