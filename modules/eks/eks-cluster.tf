@@ -41,7 +41,7 @@ resource "aws_security_group" "cluster" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags {
+  tags = {
     Name = "${var.cluster-name}-eks-cluster-sg"
   }
 }
