@@ -1,7 +1,7 @@
 # terraform-aws-eks
 
 [![CircleCI](https://circleci.com/gh/WesleyCharlesBlake/terraform-aws-eks.svg?style=svg)](https://circleci.com/gh/WesleyCharlesBlake/terraform-aws-eks)
-[![TerraformRefigistry](https://img.shields.io/badge/Terraform%20Registry-v2.0.1-blue.svg)](https://registry.terraform.io/modules/WesleyCharlesBlake/eks/aws/)
+[![TerraformRefigistry](https://img.shields.io/badge/Terraform%20Registry-v2.0.2-blue.svg)](https://registry.terraform.io/modules/WesleyCharlesBlake/eks/aws/)
 
 
 Deploy a full AWS EKS cluster with Terraform
@@ -54,12 +54,13 @@ cd terraform-aws-eks
 
 > **NOTE** use `version = "2.0.0"` with terraform `0.12.x >` and `version = 1.0.4` with terraform `< 0.11x`
 
+Have a look at the [examples](examples) for complete references
 You can use this module from the Terraform registry as a remote source:
 
 ```terraform
-module "module" {
+module "eks" {
   source  = "WesleyCharlesBlake/eks/aws"
-  version = "2.0.1"
+  version = "2.0.2"
 
   aws-region          = "us-east-1"
   availability-zones  = ["us-east-1a", "us-east-1b", "us-east-1c"]
@@ -77,14 +78,22 @@ module "module" {
   ec2-key             = "my-key"
 }
 
+output "kubeconfig" {
+  value = module.module.kubeconfig
+}
+
+output "config-map" {
+  value = module.module.config-map
+}
+
 ```
 
 **Or** by using variables.tf or a tfvars file:
 
 ```terraform
-module "module" {
+module "eks" {
   source  = "WesleyCharlesBlake/eks/aws"
-  version = "2.0.1"
+  version = "2.0.2"
 
   aws-region          = var.aws-region
   availability-zones  = var.availability-zones
