@@ -1,7 +1,7 @@
 # terraform-aws-eks
 
 [![CircleCI](https://circleci.com/gh/WesleyCharlesBlake/terraform-aws-eks.svg?style=svg)](https://circleci.com/gh/WesleyCharlesBlake/terraform-aws-eks)
-[![TerraformRefigistry](https://img.shields.io/badge/Terraform%20Registry-v2.0.0-blue.svg)](https://registry.terraform.io/modules/WesleyCharlesBlake/eks/aws/)
+[![TerraformRefigistry](https://img.shields.io/badge/Terraform%20Registry-v2.0.1-blue.svg)](https://registry.terraform.io/modules/WesleyCharlesBlake/eks/aws/)
 
 
 Deploy a full AWS EKS cluster with Terraform
@@ -16,29 +16,32 @@ Deploy a full AWS EKS cluster with Terraform
 6. An EKS Cluster
 7. Autoscaling group and Launch Configuration
 8. Worker Nodes in a private Subnet
-9. The ConfigMap required to register Nodes with EKS
-10. KUBECONFIG file to authenticate kubectl using the heptio authenticator aws binary
+9. bastion host for ssh access to the VPC
+10. The ConfigMap required to register Nodes with EKS
+11. KUBECONFIG file to authenticate kubectl using the heptio authenticator aws binary
 
 ## Configuration
 
 You can configure you config with the following input variables:
 
-| Name                  | Description                       | Default                                                               |
-| --------------------- | --------------------------------- | --------------------------------------------------------------------- |
-| `cluster-name`        | The name of your EKS Cluster      | `eks-cluster`                                                         |
-| `aws-region`          | The AWS Region to deploy EKS      | `us-east-1`                                                           |
-| `k8s-version`         | The desired K8s version to launch | `1.13`                                                                |
-| `node-instance-type`  | Worker Node EC2 instance type     | `m4.large`                                                            |
-| `desired-capacity`    | Autoscaling Desired node capacity | `2`                                                                   |
-| `max-size`            | Autoscaling Maximum node capacity | `5`                                                                   |
-| `min-size`            | Autoscaling Minimum node capacity | `1`                                                                   |
-| `vpc-subnet-cidr`     | Subnet CIDR                       | `10.0.0.0/16`                                                         |
-| `private-subnet-cidr` | Private Subnet CIDR               | `["10.0.0.0/19", "10.0.32.0/19", "10.0.64.0/19"]`                     |
-| `public-subnet-cidr`  | Public Subnet CIDR                | `["10.0.128.0/20", "10.0.144.0/20", "10.0.160.0/20"]`                 |
-| `db-subnet-cidr`      | DB/Spare Subnet CIDR              | `["10.0.192.0/21", "10.0.200.0/21", "10.0.208.0/21"] `                |
-| `eks-cw-logging`      | EKS Logging Components            | `["api", "audit", "authenticator", "controllerManager", "scheduler"]` |
+| Name                  | Description                        | Default                                                               |
+| --------------------- | ---------------------------------- | --------------------------------------------------------------------- |
+| `cluster-name`        | The name of your EKS Cluster       | `eks-cluster`                                                         |
+| `aws-region`          | The AWS Region to deploy EKS       | `us-east-1`                                                           |
+| `availability-zones`  | AWS Availability Zones             | `["us-east-1a", "us-east-1b", "us-east-1c"]`                          |
+| `k8s-version`         | The desired K8s version to launch  | `1.13`                                                                |
+| `node-instance-type`  | Worker Node EC2 instance type      | `m4.large`                                                            |
+| `desired-capacity`    | Autoscaling Desired node capacity  | `2`                                                                   |
+| `max-size`            | Autoscaling Maximum node capacity  | `5`                                                                   |
+| `min-size`            | Autoscaling Minimum node capacity  | `1`                                                                   |
+| `vpc-subnet-cidr`     | Subnet CIDR                        | `10.0.0.0/16`                                                         |
+| `private-subnet-cidr` | Private Subnet CIDR                | `["10.0.0.0/19", "10.0.32.0/19", "10.0.64.0/19"]`                     |
+| `public-subnet-cidr`  | Public Subnet CIDR                 | `["10.0.128.0/20", "10.0.144.0/20", "10.0.160.0/20"]`                 |
+| `db-subnet-cidr`      | DB/Spare Subnet CIDR               | `["10.0.192.0/21", "10.0.200.0/21", "10.0.208.0/21"]`                |
+| `eks-cw-logging`      | EKS Logging Components             | `["api", "audit", "authenticator", "controllerManager", "scheduler"]` |
+| `ec2-key`             | EC2 Key Pair for bastion and nodes | `my-key`                                                              |
 
-> You can create a file called terraform.tfvars in the project root, to place your variables if you would like to over-ride the defaults.
+> You can create a file called terraform.tfvars or copy [variables.tf](https://github.com/WesleyCharlesBlake/terraform-aws-eks/blob/master/variables.tf) into the project root, if you would like to over-ride the defaults.
 
 ## How to use this example
 
@@ -53,10 +56,35 @@ cd terraform-aws-eks
 
 You can use this module from the Terraform registry as a remote source:
 
-```bash
+```terraform
 module "module" {
   source  = "WesleyCharlesBlake/eks/aws"
-  version = "2.0.0"
+  version = "2.0.1"
+
+  aws-region          = "us-east-1"
+  availability-zones  = ["us-east-1a", "us-east-1b", "us-east-1c"]
+  cluster-name        = "my-cluster"
+  k8s-version         = "1.13"
+  node-instance-type  = "t3.medium"
+  desired-capacity    = "3"
+  max-size            = "5"
+  min-size            = "1"
+  vpc-subnet-cidr     = "10.0.0.0/16"
+  private-subnet-cidr = ["10.0.0.0/19", "10.0.32.0/19", "10.0.64.0/19"]
+  public-subnet-cidr  = ["10.0.128.0/20", "10.0.144.0/20", "10.0.160.0/20"]
+  db-subnet-cidr      = ["10.0.192.0/21", "10.0.200.0/21", "10.0.208.0/21"]
+  eks-cw-logging      = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
+  ec2-key             = "my-key"
+}
+
+```
+
+**Or** by using variables.tf or a tfvars file:
+
+```terraform
+module "module" {
+  source  = "WesleyCharlesBlake/eks/aws"
+  version = "2.0.1"
 
   aws-region          = var.aws-region
   availability-zones  = var.availability-zones
@@ -71,10 +99,9 @@ module "module" {
   public-subnet-cidr  = var.public-subnet-cidr
   db-subnet-cidr      = var.db-subnet-cidr
   eks-cw-logging      = var.eks-cw-logging
+  ec2-key             = var.ec2-key
 }
-
 ```
-
 ### IAM
 
 The AWS credentials must be associated with a user having at least the following AWS managed IAM policies
@@ -156,3 +183,8 @@ You can destroy this cluster entirely by running:
 terraform plan -destroy
 terraform destroy  --force
 ```
+
+
+### TODO
+
+- [ ] Add examples for reference
