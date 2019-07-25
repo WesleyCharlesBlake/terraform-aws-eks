@@ -59,7 +59,7 @@ module "node-sg" {
     },
   ]
 
-  number_of_computed_ingress_with_source_security_group_id = 3
+  number_of_computed_ingress_with_source_security_group_id = 1
 
   egress_cidr_blocks = ["0.0.0.0/0"]
   egress_rules       = ["all-all"]
