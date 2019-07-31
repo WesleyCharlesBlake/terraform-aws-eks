@@ -31,13 +31,14 @@ You can configure you config with the following input variables:
 | `availability-zones`  | AWS Availability Zones             | `["us-east-1a", "us-east-1b", "us-east-1c"]`                          |
 | `k8s-version`         | The desired K8s version to launch  | `1.13`                                                                |
 | `node-instance-type`  | Worker Node EC2 instance type      | `m4.large`                                                            |
+| `root-block-size`     | Size of the root EBS block device  | `20`                                                                  |
 | `desired-capacity`    | Autoscaling Desired node capacity  | `2`                                                                   |
 | `max-size`            | Autoscaling Maximum node capacity  | `5`                                                                   |
 | `min-size`            | Autoscaling Minimum node capacity  | `1`                                                                   |
 | `vpc-subnet-cidr`     | Subnet CIDR                        | `10.0.0.0/16`                                                         |
 | `private-subnet-cidr` | Private Subnet CIDR                | `["10.0.0.0/19", "10.0.32.0/19", "10.0.64.0/19"]`                     |
 | `public-subnet-cidr`  | Public Subnet CIDR                 | `["10.0.128.0/20", "10.0.144.0/20", "10.0.160.0/20"]`                 |
-| `db-subnet-cidr`      | DB/Spare Subnet CIDR               | `["10.0.192.0/21", "10.0.200.0/21", "10.0.208.0/21"]`                |
+| `db-subnet-cidr`      | DB/Spare Subnet CIDR               | `["10.0.192.0/21", "10.0.200.0/21", "10.0.208.0/21"]`                 |
 | `eks-cw-logging`      | EKS Logging Components             | `["api", "audit", "authenticator", "controllerManager", "scheduler"]` |
 | `ec2-key`             | EC2 Key Pair for bastion and nodes | `my-key`                                                              |
 
@@ -60,13 +61,14 @@ You can use this module from the Terraform registry as a remote source:
 ```terraform
 module "eks" {
   source  = "WesleyCharlesBlake/eks/aws"
-  version = "2.0.2"
+  version = "2.0.3"
 
   aws-region          = "us-east-1"
   availability-zones  = ["us-east-1a", "us-east-1b", "us-east-1c"]
   cluster-name        = "my-cluster"
   k8s-version         = "1.13"
   node-instance-type  = "t3.medium"
+  root-block-size     = "40"
   desired-capacity    = "3"
   max-size            = "5"
   min-size            = "1"
@@ -93,13 +95,14 @@ output "config-map" {
 ```terraform
 module "eks" {
   source  = "WesleyCharlesBlake/eks/aws"
-  version = "2.0.2"
+  version = "2.0.3"
 
   aws-region          = var.aws-region
   availability-zones  = var.availability-zones
   cluster-name        = var.cluster-name
   k8s-version         = var.k8s-version
   node-instance-type  = var.node-instance-type
+  root-block-size     = var.root-block-size
   desired-capacity    = var.desired-capacity
   max-size            = var.max-size
   min-size            = var.min-size

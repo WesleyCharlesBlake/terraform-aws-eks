@@ -60,6 +60,14 @@ variable "node-instance-type" {
   description = "Worker Node EC2 instance type"
 }
 
+variable "root-block-size" {
+  default     = "20"
+  type        = string
+  description = "Size of the root EBS block device"
+
+}
+
+
 variable "desired-capacity" {
   default     = 2
   type        = string

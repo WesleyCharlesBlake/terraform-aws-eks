@@ -40,6 +40,6 @@ module "bastion-asg" {
       value               = "bastion"
       propagate_at_launch = true
     }
-  ]  
+  ]
 
 }

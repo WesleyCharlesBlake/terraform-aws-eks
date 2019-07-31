@@ -3,6 +3,7 @@
 variable "k8s-version" {}
 
 variable node-instance-type {}
+variable "root-block-size" {}
 variable "desired-capacity" {}
 variable "max-size" {}
 variable "min-size" {}
@@ -47,7 +48,7 @@ module "eks-nodes-asg" {
 
   root_block_device = [
     {
-      volume_size = "10"
+      volume_size = "${var.root-block-size}"
       volume_type = "gp2"
       delete_on_termination = true
     },
@@ -71,9 +72,9 @@ module "eks-nodes-asg" {
 
   tags = [
     {
-      key                 = "kubernetes.io/cluster/${var.cluster-name}"
-      value               = "owned"
+      key = "kubernetes.io/cluster/${var.cluster-name}"
+      value = "owned"
       propagate_at_launch = true
     }
-  ]  
+  ]
 }
