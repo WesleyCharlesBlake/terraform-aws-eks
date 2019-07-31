@@ -7,6 +7,7 @@ module "eks" {
   cluster-name        = var.cluster-name
   k8s-version         = var.k8s-version
   node-instance-type  = var.node-instance-type
+  root-block-size     = var.root-block-size
   desired-capacity    = var.desired-capacity
   max-size            = var.max-size
   min-size            = var.min-size
