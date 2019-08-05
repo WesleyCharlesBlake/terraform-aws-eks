@@ -49,6 +49,7 @@ workflows:
           requires:
             - validate
       - release:
+          context: CI
           requires:
             - plan
           filters:
