@@ -1,12 +1,4 @@
 # EKS Terraform module
-terraform {
-  backend "remote" {
-    organization = "stratotechnology"
-    workspaces {
-      name = "terraform-aws-eks"
-    }
-  }
-}
 
 module "eks" {
   source              = "./modules/eks"

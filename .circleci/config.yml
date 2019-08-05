@@ -13,7 +13,6 @@ jobs:
       - run:
           name: Terraform Validate
           command: |
-            printf 'credentials "app.terraform.io" { \n  token = "%s" \n}\n' "$ATLAS_TOKEN" > ~/.terraformrc
             terraform init
             terraform validate
           no_output_timeout: 30m
@@ -25,7 +24,6 @@ jobs:
       - run:
           name: Terraform Plan
           command: |
-            printf 'credentials "app.terraform.io" { \n  token = "%s" \n}\n' "$ATLAS_TOKEN" > ~/.terraformrc
             terraform init
             terraform plan
           no_output_timeout: 30m
@@ -46,14 +44,11 @@ workflows:
   build-and-deploy:
     jobs:
 
-      - validate:
-          context: CI
+      - validate
       - plan:
-          context: CI
           requires:
             - validate
       - release:
-          context: CI
           requires:
             - plan
           filters:
