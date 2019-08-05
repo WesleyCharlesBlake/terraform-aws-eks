@@ -14,7 +14,6 @@ jobs:
           name: Terraform Validate
           command: |
             printf 'credentials "app.terraform.io" { \n  token = "%s" \n}\n' "$ATLAS_TOKEN" > ~/.terraformrc
-            cd ${ENV}
             terraform init
             terraform validate
           no_output_timeout: 30m
@@ -27,7 +26,6 @@ jobs:
           name: Terraform Plan
           command: |
             printf 'credentials "app.terraform.io" { \n  token = "%s" \n}\n' "$ATLAS_TOKEN" > ~/.terraformrc
-            cd ${ENV}
             terraform init
             terraform plan
           no_output_timeout: 30m
