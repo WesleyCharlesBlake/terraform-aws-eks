@@ -1,17 +1,57 @@
-version: 2
-jobs:
-  build:
-    docker:
-      - image: wesleycharlesblake/devops-tools
+version: 2.1
+executors:
 
+  terraform:
+    docker:
+      - image: wesleycharlesblake/devops-tools:0.1.18
+
+jobs:
+  validate:
+    executor: terraform
     steps:
       - checkout
       - run:
-          name: Init
-          command: terraform init
+          name: Terraform Validate
+          command: |
+            terraform init
+            terraform validate
+          no_output_timeout: 30m
+
+  plan:
+    executor: terraform
+    steps:
+      - checkout
       - run:
-          name: Validate configs
-          command: terraform validate
+          name: Terraform Plan
+          command: |
+            terraform init
+            terraform plan
+          no_output_timeout: 30m
+
+  release:
+    executor: terraform
+    steps:
+      - checkout
       - run:
-          name: Run Plan
-          command: terraform plan
+          name: Release-it
+          command: |
+            npm install
+            npm release-it --ci
+
+
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+
+      - validate
+      - plan:
+          requires:
+            - validate
+      - release:
+          context: CI
+          requires:
+            - plan
+          filters:
+            branches:
+              only: master
