@@ -3,7 +3,7 @@ executors:
 
   release:
     docker:
-      - image: 10.16.1-alpine
+      - image: node:10.16.1-alpine
   terraform:
     docker:
       - image: wesleycharlesblake/devops-tools:0.1.18
