@@ -30,9 +30,9 @@ USERDATA
 }
 
 module "eks-nodes-asg" {
-  source = "terraform-aws-modules/autoscaling/aws"
+  source  = "terraform-aws-modules/autoscaling/aws"
   version = "~> 3.0"
-  name = "eks-nodes-asg"
+  name    = "eks-nodes-asg"
 
   # Launch configuration
   #
@@ -40,40 +40,40 @@ module "eks-nodes-asg" {
   # create_lc = false # disables creation of launch configuration
   lc_name = "eks-nodes"
 
-  image_id = data.aws_ami.eks-worker-ami.id
-  instance_type = var.node-instance-type
-  security_groups = [data.aws_security_group.node.id]
-  associate_public_ip_address = false
+  image_id                     = data.aws_ami.eks-worker-ami.id
+  instance_type                = var.node-instance-type
+  security_groups              = [data.aws_security_group.node.id]
+  associate_public_ip_address  = false
   recreate_asg_when_lc_changes = true
 
   root_block_device = [
     {
-      volume_size = "${var.root-block-size}"
-      volume_type = "gp2"
+      volume_size           = "${var.root-block-size}"
+      volume_type           = "gp2"
       delete_on_termination = true
     },
   ]
 
   # Auto scaling group
-  asg_name = "eks-nodegroup"
+  asg_name            = "eks-nodegroup"
   vpc_zone_identifier = data.aws_subnet_ids.private.ids
 
   health_check_type = "EC2"
 
-  min_size = var.min-size
-  max_size = var.max-size
-  desired_capacity = var.desired-capacity
+  min_size                  = var.min-size
+  max_size                  = var.max-size
+  desired_capacity          = var.desired-capacity
   wait_for_capacity_timeout = 0
 
   key_name = var.ec2-key
 
   iam_instance_profile = "${aws_iam_instance_profile.node.name}"
-  user_data = local.eks-node-userdata
+  user_data            = local.eks-node-userdata
 
   tags = [
     {
-      key = "kubernetes.io/cluster/${var.cluster-name}"
-      value = "owned"
+      key                 = "kubernetes.io/cluster/${var.cluster-name}"
+      value               = "owned"
       propagate_at_launch = true
     }
   ]

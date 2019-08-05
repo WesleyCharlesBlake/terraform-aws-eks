@@ -1,6 +1,9 @@
 version: 2.1
 executors:
 
+  release:
+    docker:
+      - image: 10.16.1-alpine
   terraform:
     docker:
       - image: wesleycharlesblake/devops-tools:0.1.18
@@ -29,7 +32,7 @@ jobs:
           no_output_timeout: 30m
 
   release:
-    executor: terraform
+    executor: release
     steps:
       - checkout
       - run:

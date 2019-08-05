@@ -1,7 +1,3 @@
-#
-# Outputs
-#
-
 locals {
   config-map-aws-auth = <<CONFIGMAPAWSAUTH
 
