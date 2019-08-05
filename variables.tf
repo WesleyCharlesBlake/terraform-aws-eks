@@ -67,7 +67,6 @@ variable "root-block-size" {
 
 }
 
-
 variable "desired-capacity" {
   default     = 2
   type        = string
@@ -84,6 +83,24 @@ variable "min-size" {
   default     = 1
   type        = string
   description = "Autoscaling Minimum node capacity"
+}
+
+variable "public-min-size" {
+  default     = 1
+  type        = string
+  description = "Public Node groups ASG capacity"
+}
+
+variable "public-max-size" {
+  default     = 1
+  type        = string
+  description = "Public Node groups ASG capacity"
+}
+
+variable "public-desired-capacity" {
+  default     = 1
+  type        = string
+  description = "Public Node groups ASG capacity"
 }
 
 variable "ec2-key" {
