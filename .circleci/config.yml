@@ -39,7 +39,7 @@ jobs:
           name: Release-it
           command: |
             npm install
-            npm release-it --ci
+            npm run release --ci
 
 
 workflows:
