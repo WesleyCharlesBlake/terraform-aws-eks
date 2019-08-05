@@ -1,0 +1,10 @@
+{
+  "name": "terraform-aws-eks-release",
+  "version": "2.0.3",
+  "scripts": {
+    "release": "release-it"
+  },
+  "devDependencies": {
+    "release-it": "^12.3.5"
+  }
+}
