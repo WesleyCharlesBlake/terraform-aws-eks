@@ -11,7 +11,7 @@ module "cluster-sg" {
   description = "EKS node security groups"
   vpc_id      = data.aws_vpc.eks.id
 
-  ingress_cidr_blocks = [local.workstation-external-cidr]
+  ingress_cidr_blocks = ["0.0.0.0/0"]
 
   computed_ingress_with_source_security_group_id = [
     {
