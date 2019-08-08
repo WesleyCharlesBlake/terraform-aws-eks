@@ -86,11 +86,11 @@ module "eks" {
 }
 
 output "kubeconfig" {
-  value = module.module.kubeconfig
+  value = module.eks.kubeconfig
 }
 
 output "config-map" {
-  value = module.module.config-map
+  value = module.eks.config-map
 }
 
 ```
