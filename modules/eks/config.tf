@@ -22,21 +22,21 @@ clusters:
 - cluster:
     server: ${aws_eks_cluster.eks.endpoint}
     certificate-authority-data: ${aws_eks_cluster.eks.certificate_authority.0.data}
-  name: kubernetes
+  name: ${var.cluster-name}
 contexts:
 - context:
-    cluster: kubernetes
-    user: aws
-  name: aws
-current-context: aws
+    cluster: ${var.cluster-name}
+    user: ${var.cluster-name}
+  name: ${var.cluster-name}
+current-context: ${var.cluster-name}
 kind: Config
 preferences: {}
 users:
-- name: aws
+- name: ${var.cluster-name}
   user:
     exec:
       apiVersion: client.authentication.k8s.io/v1alpha1
-      command: aws-iam-authenticator
+      command: aws
       args:
         - "token"
         - "-i"
