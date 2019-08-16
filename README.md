@@ -18,7 +18,7 @@ Deploy a full AWS EKS cluster with Terraform
 8. Worker Nodes in a private Subnet
 9. bastion host for ssh access to the VPC
 10. The ConfigMap required to register Nodes with EKS
-11. KUBECONFIG file to authenticate kubectl using the heptio authenticator aws binary
+11. KUBECONFIG file to authenticate kubectl using the `aws eks get-token` command. needs awscli version `1.16.156 >`
 
 ## Configuration
 
@@ -74,9 +74,9 @@ module "eks" {
   desired-capacity    = "3"
   max-size            = "5"
   min-size            = "1"
-  public-min-size     = "1"
-  public-max-size     = "1"
-  public-desired-capacity = "1"
+  public-min-size     = "0" # setting to 0 will create the launch config etc, but no nodes will deploy"
+  public-max-size     = "0"
+  public-desired-capacity = "0"
   vpc-subnet-cidr     = "10.0.0.0/16"
   private-subnet-cidr = ["10.0.0.0/19", "10.0.32.0/19", "10.0.64.0/19"]
   public-subnet-cidr  = ["10.0.128.0/20", "10.0.144.0/20", "10.0.160.0/20"]
