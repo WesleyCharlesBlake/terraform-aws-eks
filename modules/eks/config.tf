@@ -42,6 +42,8 @@ users:
         - "get-token"
         - "--cluster-name"
         - "${var.cluster-name}"
+        - "--region"
+        - "${var.aws-region}"
 KUBECONFIG
 }
 

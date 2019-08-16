@@ -7,25 +7,14 @@ variable "root-block-size" {}
 variable "desired-capacity" {}
 variable "max-size" {}
 variable "min-size" {}
+variable "kublet-extra-args" {}
 
-
-
-# EKS currently documents this required userdata for EKS worker nodes to
-# properly configure Kubernetes applications on the EC2 instance.
-# We utilize a Terraform local here to simplify Base64 encoding this
-# information into the AutoScaling Launch Configuration.
-# More information: https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-06-05/amazon-eks-nodegroup.yaml
-# EKS currently documents this required userdata for EKS worker nodes to
-# properly configure Kubernetes applications on the EC2 instance.
-# We utilize a Terraform local here to simplify Base64 encoding this
-# information into the AutoScaling Launch Configuration.
-# More information: https://docs.aws.amazon.com/eks/latest/userguide/launch-workers.html
 
 locals {
   eks-node-userdata = <<USERDATA
 #!/bin/bash
 set -o xtrace
-/etc/eks/bootstrap.sh --apiserver-endpoint '${aws_eks_cluster.eks.endpoint}' --b64-cluster-ca '${aws_eks_cluster.eks.certificate_authority.0.data}' '${var.cluster-name}'
+/etc/eks/bootstrap.sh --apiserver-endpoint '${aws_eks_cluster.eks.endpoint}' --b64-cluster-ca '${aws_eks_cluster.eks.certificate_authority.0.data}' '${var.cluster-name}' --kubelet-extra-args '${var.kublet-extra-args}'
 USERDATA
 }
 
@@ -38,7 +27,7 @@ module "eks-nodes-asg" {
   #
   # launch_configuration = "my-existing-launch-configuration" # Use the existing launch configuration
   # create_lc = false # disables creation of launch configuration
-  lc_name = "eks-nodes"
+  lc_name = "${var.cluster-name}-node-lc"
 
   image_id                     = data.aws_ami.eks-worker-ami.id
   instance_type                = var.node-instance-type
@@ -55,7 +44,7 @@ module "eks-nodes-asg" {
   ]
 
   # Auto scaling group
-  asg_name            = "eks-nodegroup"
+  asg_name            = "${var.cluster-name}-node"
   vpc_zone_identifier = data.aws_subnet_ids.private.ids
 
   health_check_type = "EC2"
