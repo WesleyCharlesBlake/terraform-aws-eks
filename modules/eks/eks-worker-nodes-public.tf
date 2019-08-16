@@ -17,7 +17,7 @@ module "public-eks-nodes-asg" {
   #
   # launch_configuration = "my-existing-launch-configuration" # Use the existing launch configuration
   # create_lc = false # disables creation of launch configuration
-  lc_name = "public-eks-nodes"
+  lc_name = "${var.cluster-name}-node-public-lc"
 
   image_id                     = data.aws_ami.eks-worker-ami.id
   instance_type                = var.node-instance-type
@@ -34,7 +34,7 @@ module "public-eks-nodes-asg" {
   ]
 
   # Auto scaling group
-  asg_name            = "eks-public-nodegroup"
+  asg_name            = "${var.cluster-name}-node-public"
   vpc_zone_identifier = data.aws_subnet_ids.public.ids
 
   health_check_type = "EC2"
