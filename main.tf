@@ -8,6 +8,7 @@ module "eks" {
   k8s-version             = var.k8s-version
   node-instance-type      = var.node-instance-type
   kublet-extra-args       = var.kublet-extra-args
+  public-kublet-extra-args = var.public-kublet-extra-args
   root-block-size         = var.root-block-size
   desired-capacity        = var.desired-capacity
   max-size                = var.max-size
