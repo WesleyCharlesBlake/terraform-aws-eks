@@ -1,13 +1,15 @@
-variable "public-min-size" {
+variable "public-min-size" {}
+variable "public-max-size" {}
+variable "public-desired-capacity" {}
+variable "public-kublet-extra-args" {}
+
+locals {
+  eks-public-node-userdata = <<USERDATA
+#!/bin/bash
+set -o xtrace
+/etc/eks/bootstrap.sh --apiserver-endpoint '${aws_eks_cluster.eks.endpoint}' --b64-cluster-ca '${aws_eks_cluster.eks.certificate_authority.0.data}' '${var.cluster-name}' --kubelet-extra-args '${var.public-kublet-extra-args}'
+USERDATA
 }
-
-variable "public-max-size" {
-}
-
-variable "public-desired-capacity" {
-}
-
-
 module "public-eks-nodes-asg" {
   source  = "terraform-aws-modules/autoscaling/aws"
   version = "~> 3.0"

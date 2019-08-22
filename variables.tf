@@ -30,6 +30,13 @@ variable "kublet-extra-args" {
   description = "Additional arguments to supply to the node kubelet process"
 }
 
+variable "public-kublet-extra-args" {
+  default     = ""
+  type        = string
+  description = "Additional arguments to supply to the public node kubelet process"
+
+}
+
 variable "vpc-subnet-cidr" {
   default     = "10.0.0.0/16"
   type        = string
