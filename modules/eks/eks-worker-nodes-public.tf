@@ -49,7 +49,7 @@ module "public-eks-nodes-asg" {
   key_name = var.ec2-key
 
   iam_instance_profile = "${aws_iam_instance_profile.node.name}"
-  user_data            = local.eks-node-userdata
+  user_data            = local.eks-public-node-userdata
 
   tags = [
     {
