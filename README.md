@@ -183,7 +183,7 @@ Get the config from terraform output, and save it to a yaml file:
 terraform output config-map > config-map-aws-auth.yaml
 ```
 
-Apply the config map to EKS:
+Configure aws cli with a user account having appropriate access and apply the config map to EKS cluster:
 
 ```bash
 kubectl apply -f config-map-aws-auth.yaml
@@ -194,6 +194,53 @@ You can verify the worker nodes are joining the cluster
 ```bash
 kubectl get nodes --watch
 ```
+
+### Authorize users to access the cluster
+
+Initially, only the system that deployed the cluster will be able to access the cluster. To authorize other users for accessing the cluster, `aws-auth` config needs to be modified by using the steps given below:
+
+* Open the aws-auth file in the edit mode on the machine that has been used to deploy EKS cluster:
+
+```bash
+sudo kubectl edit -n kube-system configmap/aws-auth
+```
+
+* Add the following configuration in that file by changing the placeholders:
+
+
+```yaml
+
+mapUsers: |
+  - userarn: arn:aws:iam::111122223333:user/<username>
+    username: <username>
+    groups:
+      - system:masters
+```
+
+So, the final configuration would look like this:
+
+```yaml
+apiVersion: v1
+data:
+  mapRoles: |
+    - rolearn: arn:aws:iam::555555555555:role/devel-worker-nodes-NodeInstanceRole-74RF4UBDUKL6
+      username: system:node:{{EC2PrivateDNSName}}
+      groups:
+        - system:bootstrappers
+        - system:nodes
+  mapUsers: |
+    - userarn: arn:aws:iam::111122223333:user/<username>
+      username: <username>
+      groups:
+        - system:masters
+```
+
+* Once the user map is added in the configuration we need to create cluster role binding for that user:
+
+```bash
+kubectl create clusterrolebinding ops-user-cluster-admin-binding-<username> --clusterrole=cluster-admin --user=<username>
+```
+Replace the placeholder with proper values
 
 ### Cleaning up
 
