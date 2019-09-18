@@ -21,7 +21,7 @@ USERDATA
 module "eks-nodes-asg" {
   source  = "terraform-aws-modules/autoscaling/aws"
   version = "~> 3.0"
-  name    = "eks-nodes-asg"
+  name    = "${var.cluster-name}-eks-nodes"
 
   # Launch configuration
   #
