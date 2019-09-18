@@ -6,9 +6,9 @@ variable "ec2-key" {}
 module "bastion-asg" {
   source  = "terraform-aws-modules/autoscaling/aws"
   version = "~> 3.0"
-  name    = "bastion-asg"
+  name    = "${var.cluster-name}-bastion"
 
-  lc_name = "bastion-lc"
+  lc_name = "${var.cluster-name}-bastion-lc"
 
   image_id                     = data.aws_ami.bastion.id
   instance_type                = "t2.small"
@@ -25,7 +25,7 @@ module "bastion-asg" {
   ]
 
   # Auto scaling group
-  asg_name                  = "bastion"
+  asg_name                  = "${var.cluster-name}-bastion"
   vpc_zone_identifier       = data.aws_subnet_ids.public.ids
   health_check_type         = "EC2"
   min_size                  = 1
@@ -36,10 +36,9 @@ module "bastion-asg" {
 
   tags = [
     {
-      key                 = "Name"
-      value               = "bastion"
+      key                 = "kubernetes.io/cluster/${var.cluster-name}"
+      value               = "owned"
       propagate_at_launch = true
     }
   ]
-
 }
