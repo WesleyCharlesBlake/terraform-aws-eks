@@ -1,7 +1,7 @@
 # terraform-aws-eks
 
 [![CircleCI](https://circleci.com/gh/WesleyCharlesBlake/terraform-aws-eks.svg?style=svg)](https://circleci.com/gh/WesleyCharlesBlake/terraform-aws-eks)
-[![TerraformRefigistry](https://img.shields.io/badge/Terraform%20Registry-v2.0.2-blue.svg)](https://registry.terraform.io/modules/WesleyCharlesBlake/eks/aws/)
+[![TerraformRefigistry](https://img.shields.io/badge/Terraform%20Registry-version_2-blue.svg)](https://registry.terraform.io/modules/WesleyCharlesBlake/eks/aws/)
 
 
 Deploy a full AWS EKS cluster with Terraform
@@ -24,26 +24,26 @@ Deploy a full AWS EKS cluster with Terraform
 
 You can configure you config with the following input variables:
 
-| Name                      | Description                        | Default                                                               |
-| ------------------------- | ---------------------------------- | --------------------------------------------------------------------- |
-| `cluster-name`            | The name of your EKS Cluster       | `eks-cluster`                                                         |
-| `aws-region`              | The AWS Region to deploy EKS       | `us-east-1`                                                           |
-| `availability-zones`      | AWS Availability Zones             | `["us-east-1a", "us-east-1b", "us-east-1c"]`                          |
-| `k8s-version`             | The desired K8s version to launch  | `1.13`                                                                |
-| `node-instance-type`      | Worker Node EC2 instance type      | `m4.large`                                                            |
-| `root-block-size`         | Size of the root EBS block device  | `20`                                                                  |
-| `desired-capacity`        | Autoscaling Desired node capacity  | `2`                                                                   |
-| `max-size`                | Autoscaling Maximum node capacity  | `5`                                                                   |
-| `min-size`                | Autoscaling Minimum node capacity  | `1`                                                                   |
-| `public-min-size`         | Public Node groups ASG capacity    | `1`                                                                     |
-| `public-max-size`         | Public Node groups ASG capacity    | `1`                                                                     |
-| `public-desired-capacity` | Public Node groups ASG capacity    | `1`                                                                     |
-| `vpc-subnet-cidr`         | Subnet CIDR                        | `10.0.0.0/16`                                                         |
-| `private-subnet-cidr`     | Private Subnet CIDR                | `["10.0.0.0/19", "10.0.32.0/19", "10.0.64.0/19"]`                     |
-| `public-subnet-cidr`      | Public Subnet CIDR                 | `["10.0.128.0/20", "10.0.144.0/20", "10.0.160.0/20"]`                 |
-| `db-subnet-cidr`          | DB/Spare Subnet CIDR               | `["10.0.192.0/21", "10.0.200.0/21", "10.0.208.0/21"]`                 |
-| `eks-cw-logging`          | EKS Logging Components             | `["api", "audit", "authenticator", "controllerManager", "scheduler"]` |
-| `ec2-key`                 | EC2 Key Pair for bastion and nodes | `my-key`                                                              |
+| Name                      | Description                        | Default                                                                                                                                                                                                                                                                                                                                                                                                          |
+| ------------------------- | ---------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `cluster-name`            | The name of your EKS Cluster       | `eks-cluster`                                                                                                                                                                                                                                                                                                                                                                                                    |
+| `aws-region`              | The AWS Region to deploy EKS       | `us-east-1`                                                                                                                                                                                                                                                                                                                                                                                                      |
+| `availability-zones`      | AWS Availability Zones             | `["us-east-1a", "us-east-1b", "us-east-1c"]`                                                                                                                                                                                                                                                                                                                                                                     |
+| `k8s-version`             | The desired K8s version to launch  | `1.13`                                                                                                                                                                                                                                                                                                                                                                                                           |
+| `node-instance-type`      | Worker Node EC2 instance type      | `m4.large`                                                                                                                                                                                                                                                                                                                                                                                                       |
+| `root-block-size`         | Size of the root EBS block device  | `20`                                                                                                                                                                                                                                                                                                                                                                                                             |
+| `desired-capacity`        | Autoscaling Desired node capacity  | `2`                                                                                                                                                                                                                                                                                                                                                                                                              |
+| `max-size`                | Autoscaling Maximum node capacity  | `5`                                                                                                                                                                                                                                                                                                                                                                                                              |
+| `min-size`                | Autoscaling Minimum node capacity  | `1`                                                                                                                                                                                                                                                                                                                                                                                                              |
+| `public-min-size`         | Public Node groups ASG capacity    | `1`                                                                                                                                                                                                                                                                                                                                                                                                              |
+| `public-max-size`         | Public Node groups ASG capacity    | `1`                                                                                                                                                                                                                                                                                                                                                                                                              |
+| `public-desired-capacity` | Public Node groups ASG capacity    | `1`                                                                                                                                                                                                                                                                                                                                                                                                              |
+| `vpc-subnet-cidr`         | Subnet CIDR                        | `10.0.0.0/16`                                                                                                                                                                                                                                                                                                                                                                                                    |
+| `private-subnet-cidr`     | Private Subnet CIDR                | `["10.0.0.0/19", "10.0.32.0/19", "10.0.64.0/19"]`                                                                                                                                                                                                                                                                                                                                                                |
+| `public-subnet-cidr`      | Public Subnet CIDR                 | `["10.0.128.0/20", "10.0.144.0/20", "10.0.160.0/20"]`                                                                                                                                                                                                                                                                                                                                                            |
+| `db-subnet-cidr`          | DB/Spare Subnet CIDR               | `["10.0.192.0/21", "10.0.200.0/21", "10.0.208.0/21"]`                                                                                                                                                                                                                                                                                                                                                            |
+| `eks-cw-logging`          | EKS Logging Components             | `["api", "audit", "authenticator", "controllerManager", "scheduler"]`                                                                                                                                                                                                                                                                                                                                            |
+| `ec2-key-public-key`      | EC2 Key Pair for bastion and nodes | `ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD3F6tyPEFEzV0LX3X8BsXdMsQz1x2cEikKDEY0aIj41qgxMCP/iteneqXSIFZBp5vizPvaoIR3Um9xK7PGoW8giupGn+EPuxIA4cDM4vzOqOkiMPhz5XK0whEjkVzTo4+S0puvDZuwIsdiW9mxhJc7tgBNL0cYlWSYVkz4G/fslNfRPW5mYAM49f4fhtxPb5ok4Q2Lg9dPKVHO/Bgeu5woMc7RY0p1ej6D4CKFE6lymSDJpW0YHX/wqE9+cfEauh7xZcG0q9t2ta6F6fmX0agvpFyZo8aFbXeUBr7osSCJNgvavWbM/06niWrOvYX2xwWdhXmXSrbX8ZbabVohBK41 email@example.com` |
 
 > You can create a file called terraform.tfvars or copy [variables.tf](https://github.com/WesleyCharlesBlake/terraform-aws-eks/blob/master/variables.tf) into the project root, if you would like to over-ride the defaults.
 
@@ -82,7 +82,7 @@ module "eks" {
   public-subnet-cidr  = ["10.0.128.0/20", "10.0.144.0/20", "10.0.160.0/20"]
   db-subnet-cidr      = ["10.0.192.0/21", "10.0.200.0/21", "10.0.208.0/21"]
   eks-cw-logging      = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
-  ec2-key             = "my-key"
+  ec2-key-public-key  = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD3F6tyPEFEzV0LX3X8BsXdMsQz1x2cEikKDEY0aIj41qgxMCP/iteneqXSIFZBp5vizPvaoIR3Um9xK7PGoW8giupGn+EPuxIA4cDM4vzOqOkiMPhz5XK0whEjkVzTo4+S0puvDZuwIsdiW9mxhJc7tgBNL0cYlWSYVkz4G/fslNfRPW5mYAM49f4fhtxPb5ok4Q2Lg9dPKVHO/Bgeu5woMc7RY0p1ej6D4CKFE6lymSDJpW0YHX/wqE9+cfEauh7xZcG0q9t2ta6F6fmX0agvpFyZo8aFbXeUBr7osSCJNgvavWbM/06niWrOvYX2xwWdhXmXSrbX8ZbabVohBK41 email@example.com"
 }
 
 output "kubeconfig" {
@@ -118,7 +118,7 @@ module "eks" {
   public-subnet-cidr  = var.public-subnet-cidr
   db-subnet-cidr      = var.db-subnet-cidr
   eks-cw-logging      = var.eks-cw-logging
-  ec2-key             = var.ec2-key
+  ec2-key-public-key  = var.ec2-key
 }
 ```
 

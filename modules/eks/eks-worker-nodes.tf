@@ -54,7 +54,7 @@ module "eks-nodes-asg" {
   desired_capacity          = var.desired-capacity
   wait_for_capacity_timeout = 0
 
-  key_name = var.ec2-key
+  key_name = aws_key_pair.deployer.key_name
 
   iam_instance_profile = "${aws_iam_instance_profile.node.name}"
   user_data            = local.eks-node-userdata
