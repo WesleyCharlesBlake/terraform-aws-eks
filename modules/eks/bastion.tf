@@ -1,7 +1,5 @@
 ### bastion
 
-variable "ec2-key" {}
-
 ### bastion hosts
 module "bastion-asg" {
   source  = "terraform-aws-modules/autoscaling/aws"
@@ -32,7 +30,7 @@ module "bastion-asg" {
   max_size                  = 1
   desired_capacity          = 1
   wait_for_capacity_timeout = 0
-  key_name                  = var.ec2-key
+  key_name                  = aws_key_pair.deployer.key_name
 
   tags = [
     {
