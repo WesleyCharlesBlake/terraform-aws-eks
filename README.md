@@ -90,7 +90,7 @@ output "kubeconfig" {
 }
 
 output "config-map" {
-  value = module.eks.config-map
+  value = module.eks.config-map-aws-auth
 }
 
 ```
