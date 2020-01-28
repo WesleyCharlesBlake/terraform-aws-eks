@@ -1,33 +1,25 @@
-# EKS Worker Nodes Resources
-
-variable "k8s-version" {}
-
-variable node-instance-type {}
-variable "root-block-size" {}
-variable "desired-capacity" {}
-variable "max-size" {}
-variable "min-size" {}
-variable "kublet-extra-args" {}
-
+variable "public-min-size" {}
+variable "public-max-size" {}
+variable "public-desired-capacity" {}
+variable "public-kublet-extra-args" {}
 
 locals {
-  eks-node-userdata = <<USERDATA
+  eks-public-node-userdata = <<USERDATA
 #!/bin/bash
 set -o xtrace
-/etc/eks/bootstrap.sh --apiserver-endpoint '${aws_eks_cluster.eks.endpoint}' --b64-cluster-ca '${aws_eks_cluster.eks.certificate_authority.0.data}' '${var.cluster-name}' --kubelet-extra-args '${var.kublet-extra-args}'
+/etc/eks/bootstrap.sh --apiserver-endpoint '${aws_eks_cluster.eks.endpoint}' --b64-cluster-ca '${aws_eks_cluster.eks.certificate_authority.0.data}' '${var.cluster-name}' --kubelet-extra-args '${var.public-kublet-extra-args}'
 USERDATA
 }
-
-module "eks-nodes-asg" {
+module "public-eks-nodes-asg" {
   source  = "terraform-aws-modules/autoscaling/aws"
   version = "~> 3.0"
-  name    = "${var.cluster-name}-eks-nodes"
+  name    = "public-eks-nodes-asg"
 
   # Launch configuration
   #
   # launch_configuration = "my-existing-launch-configuration" # Use the existing launch configuration
   # create_lc = false # disables creation of launch configuration
-  lc_name = "${var.cluster-name}-node-lc"
+  lc_name = "${var.cluster-name}-node-public-lc"
 
   image_id                     = data.aws_ami.eks-worker-ami.id
   instance_type                = var.node-instance-type
@@ -44,20 +36,20 @@ module "eks-nodes-asg" {
   ]
 
   # Auto scaling group
-  asg_name            = "${var.cluster-name}-node"
-  vpc_zone_identifier = data.aws_subnet_ids.private.ids
+  asg_name            = "${var.cluster-name}-node-public"
+  vpc_zone_identifier = data.aws_subnet_ids.public.ids
 
   health_check_type = "EC2"
 
-  min_size                  = var.min-size
-  max_size                  = var.max-size
-  desired_capacity          = var.desired-capacity
+  min_size                  = var.public-min-size
+  max_size                  = var.public-max-size
+  desired_capacity          = var.public-desired-capacity
   wait_for_capacity_timeout = 0
 
   key_name = aws_key_pair.deployer.key_name
 
   iam_instance_profile = "${aws_iam_instance_profile.node.name}"
-  user_data            = local.eks-node-userdata
+  user_data            = local.eks-public-node-userdata
 
   tags = [
     {
