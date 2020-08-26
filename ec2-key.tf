@@ -1,4 +1,3 @@
-variable "ec2-key-public-key" {}
 
 resource "aws_key_pair" "deployer" {
   key_name   = var.cluster-name

@@ -1,19 +1,11 @@
 # EKS Cluster Resources
 
-variable "cluster-name" {
-}
-variable "vpc-subnet-cidr" {
-}
-
-variable "eks-cw-logging" {
-}
-
 resource "aws_eks_cluster" "eks" {
-  name = "${var.cluster-name}"
+  name = var.cluster-name
 
   version = var.k8s-version
 
-  role_arn = "${aws_iam_role.cluster.arn}"
+  role_arn = aws_iam_role.cluster.arn
 
   vpc_config {
     security_group_ids = [data.aws_security_group.cluster.id]
@@ -23,7 +15,7 @@ resource "aws_eks_cluster" "eks" {
   enabled_cluster_log_types = var.eks-cw-logging
 
   depends_on = [
-    "aws_iam_role_policy_attachment.cluster-AmazonEKSClusterPolicy",
-    "aws_iam_role_policy_attachment.cluster-AmazonEKSServicePolicy",
+    aws_iam_role_policy_attachment.cluster-AmazonEKSClusterPolicy,
+    aws_iam_role_policy_attachment.cluster-AmazonEKSServicePolicy,
   ]
 }

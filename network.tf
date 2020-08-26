@@ -1,8 +1,4 @@
 ### VPC
-variable "availability-zones" {}
-variable "private-subnet-cidr" {}
-variable "public-subnet-cidr" {}
-variable "db-subnet-cidr" {}
 
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"

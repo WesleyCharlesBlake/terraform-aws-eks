@@ -1,10 +1,7 @@
+output "config-map-aws-auth" {
+  value = "${local.config-map-aws-auth}"
+}
+
 output "kubeconfig" {
-  value       = module.eks.kubeconfig
-  description = "EKS Kubeconfig"
+  value = "${local.kubeconfig}"
 }
-
-output "config-map" {
-  value       = module.eks.config-map-aws-auth
-  description = "K8S config map to authorize"
-}
-
