@@ -19,13 +19,10 @@ module "eks" {
   availability-zones      = ["us-east-1a", "us-east-1b", "us-east-1c"]
   cluster-name            = "my-cluster"
   k8s-version             = "1.13"
-  node-instance-type      = "t3.medium"
+  node-instance-type      = "t3a.medium"
   desired-capacity        = 3
   max-size                = 5
   min-size                = 1
-  public-min-size         = 1
-  public-max-size         = 5
-  public-desired-capacity = 3
   vpc-subnet-cidr         = "10.0.0.0/16"
   private-subnet-cidr     = ["10.0.0.0/19", "10.0.32.0/19", "10.0.64.0/19"]
   public-subnet-cidr      = ["10.0.128.0/20", "10.0.144.0/20", "10.0.160.0/20"]
@@ -36,8 +33,4 @@ module "eks" {
 
 output "kubeconfig" {
   value = module.eks.kubeconfig
-}
-
-output "config-map" {
-  value = module.eks.config-map-aws-auth
 }

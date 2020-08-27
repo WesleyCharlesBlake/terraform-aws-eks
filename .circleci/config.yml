@@ -6,7 +6,7 @@ executors:
       - image: circleci/node:10.16.1
   terraform:
     docker:
-      - image: wesleycharlesblake/devops-tools:0.1.18
+      - image: hashicorp/terraform:0.13.0
 
 jobs:
   validate:
@@ -39,7 +39,7 @@ jobs:
           name: Release-it
           command: |
             npm install
-            git config --global user.email "ywesley@stratotechnology.com"
+            git config --global user.email "wesley@stratotechnology.com"
             git config --global user.name "Wesley Charles Blake"
             npm run release --ci
 

@@ -1,7 +1,7 @@
 # terraform-aws-eks
 
 [![CircleCI](https://circleci.com/gh/WesleyCharlesBlake/terraform-aws-eks.svg?style=svg)](https://circleci.com/gh/WesleyCharlesBlake/terraform-aws-eks)
-[![TerraformRefigistry](https://img.shields.io/badge/Terraform%20Registry-version_2-blue.svg)](https://registry.terraform.io/modules/WesleyCharlesBlake/eks/aws/)
+[![TerraformRefigistry](https://img.shields.io/badge/Terraform%20Registry-version_3-blue.svg)](https://registry.terraform.io/modules/WesleyCharlesBlake/eks/aws/)
 
 
 Deploy a full AWS EKS cluster with Terraform
@@ -56,7 +56,11 @@ cd terraform-aws-eks
 
 ## Remote Terraform Module
 
-> **NOTE** use `version = "2.0.0"` with terraform `0.12.x >` and `version = 1.0.4` with terraform `< 0.11x`
+> **NOTE on versions**
+> The versions of this module are compatible with the following Terraform releases. Please use the correct version for your use case:
+> - `version = 3.0.0 >` with terraform `0.13.x >`  
+> - `version = 2.0.0  ` with terraform `< 0.12.x` 
+> - `version = 1.0.4  ` with terraform `< 0.11.x`
 
 Have a look at the [examples](examples) for complete references
 You can use this module from the Terraform registry as a remote source:
@@ -74,9 +78,6 @@ module "eks" {
   desired-capacity    = "3"
   max-size            = "5"
   min-size            = "1"
-  public-min-size     = "0" # setting to 0 will create the launch config etc, but no nodes will deploy"
-  public-max-size     = "0"
-  public-desired-capacity = "0"
   vpc-subnet-cidr     = "10.0.0.0/16"
   private-subnet-cidr = ["10.0.0.0/19", "10.0.32.0/19", "10.0.64.0/19"]
   public-subnet-cidr  = ["10.0.128.0/20", "10.0.144.0/20", "10.0.160.0/20"]
@@ -110,9 +111,6 @@ module "eks" {
   desired-capacity    = var.desired-capacity
   max-size            = var.max-size
   min-size            = var.min-size
-  public-min-size     = var.public-min-size
-  public-max-size     = var.public-max-size
-  public-desired-capacity = var.public-desired-capacity
   vpc-subnet-cidr     = var.vpc-subnet-cidr
   private-subnet-cidr = var.private-subnet-cidr
   public-subnet-cidr  = var.public-subnet-cidr
@@ -175,6 +173,7 @@ terraform output kubeconfig > ~/.kube/eks-cluster
 export KUBECONFIG=~/.kube/eks-cluster
 ```
 
+# Need to verify if this is still necessary in EKS platform v2
 # ### Authorize worker nodes
 # 
 # Get the config from terraform output, and save it to a yaml file:
@@ -193,7 +192,7 @@ export KUBECONFIG=~/.kube/eks-cluster
 # 
 # ```bash
 # kubectl get nodes --watch
-```
+# ```
 
 ### Authorize users to access the cluster
 
