@@ -175,24 +175,24 @@ terraform output kubeconfig > ~/.kube/eks-cluster
 export KUBECONFIG=~/.kube/eks-cluster
 ```
 
-### Authorize worker nodes
-
-Get the config from terraform output, and save it to a yaml file:
-
-```bash
-terraform output config-map > config-map-aws-auth.yaml
-```
-
-Configure aws cli with a user account having appropriate access and apply the config map to EKS cluster:
-
-```bash
-kubectl apply -f config-map-aws-auth.yaml
-```
-
-You can verify the worker nodes are joining the cluster
-
-```bash
-kubectl get nodes --watch
+# ### Authorize worker nodes
+# 
+# Get the config from terraform output, and save it to a yaml file:
+# 
+# ```bash
+# terraform output config-map > config-map-aws-auth.yaml
+# ```
+# 
+# Configure aws cli with a user account having appropriate access and apply the config map to EKS cluster:
+# 
+# ```bash
+# kubectl apply -f config-map-aws-auth.yaml
+# ```
+# 
+# You can verify the worker nodes are joining the cluster
+# 
+# ```bash
+# kubectl get nodes --watch
 ```
 
 ### Authorize users to access the cluster

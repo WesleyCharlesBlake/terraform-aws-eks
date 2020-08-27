@@ -19,7 +19,7 @@ variable "availability-zones" {
 }
 
 variable "k8s-version" {
-  default     = "1.13"
+  default     = "1.17"
   type        = string
   description = "Required K8s version"
 }
