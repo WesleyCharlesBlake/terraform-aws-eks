@@ -14,11 +14,12 @@ Deploy a full AWS EKS cluster with Terraform
 4. Security Groups, Route Tables and Route Table Associations
 5. IAM roles, instance profiles and policies
 6. An EKS Cluster
-7. Autoscaling group and Launch Configuration
-8. Worker Nodes in a private Subnet
-9. bastion host for ssh access to the VPC
-10. The ConfigMap required to register Nodes with EKS
-11. KUBECONFIG file to authenticate kubectl using the `aws eks get-token` command. needs awscli version `1.16.156 >`
+7. EKS Managed Node group
+8. Autoscaling group and Launch Configuration
+9. Worker Nodes in a private Subnet
+10. bastion host for ssh access to the VPC
+11. The ConfigMap required to register Nodes with EKS
+12. KUBECONFIG file to authenticate kubectl using the `aws eks get-token` command. needs awscli version `1.16.156 >`
 
 ## Configuration
 
@@ -34,10 +35,7 @@ You can configure you config with the following input variables:
 | `root-block-size`         | Size of the root EBS block device  | `20`                                                                                                                                                                                                                                                                                                                                                                                                             |
 | `desired-capacity`        | Autoscaling Desired node capacity  | `2`                                                                                                                                                                                                                                                                                                                                                                                                              |
 | `max-size`                | Autoscaling Maximum node capacity  | `5`                                                                                                                                                                                                                                                                                                                                                                                                              |
-| `min-size`                | Autoscaling Minimum node capacity  | `1`                                                                                                                                                                                                                                                                                                                                                                                                              |
-| `public-min-size`         | Public Node groups ASG capacity    | `1`                                                                                                                                                                                                                                                                                                                                                                                                              |
-| `public-max-size`         | Public Node groups ASG capacity    | `1`                                                                                                                                                                                                                                                                                                                                                                                                              |
-| `public-desired-capacity` | Public Node groups ASG capacity    | `1`                                                                                                                                                                                                                                                                                                                                                                                                              |
+| `min-size`                | Autoscaling Minimum node capacity  | `1`                                                                                                                                                                                                                                                                                                                                                                                                              |                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `vpc-subnet-cidr`         | Subnet CIDR                        | `10.0.0.0/16`                                                                                                                                                                                                                                                                                                                                                                                                    |
 | `private-subnet-cidr`     | Private Subnet CIDR                | `["10.0.0.0/19", "10.0.32.0/19", "10.0.64.0/19"]`                                                                                                                                                                                                                                                                                                                                                                |
 | `public-subnet-cidr`      | Public Subnet CIDR                 | `["10.0.128.0/20", "10.0.144.0/20", "10.0.160.0/20"]`                                                                                                                                                                                                                                                                                                                                                            |
@@ -48,13 +46,6 @@ You can configure you config with the following input variables:
 > You can create a file called terraform.tfvars or copy [variables.tf](https://github.com/WesleyCharlesBlake/terraform-aws-eks/blob/master/variables.tf) into the project root, if you would like to over-ride the defaults.
 
 ## How to use this example
-
-```bash
-git clone git@github.com:WesleyCharlesBlake/terraform-aws-eks.git
-cd terraform-aws-eks
-```
-
-## Remote Terraform Module
 
 > **NOTE on versions**
 > The versions of this module are compatible with the following Terraform releases. Please use the correct version for your use case:
@@ -72,7 +63,7 @@ module "eks" {
   aws-region          = "us-east-1"
   availability-zones  = ["us-east-1a", "us-east-1b", "us-east-1c"]
   cluster-name        = "my-cluster"
-  k8s-version         = "1.13"
+  k8s-version         = "1.17"
   node-instance-type  = "t3.medium"
   root-block-size     = "40"
   desired-capacity    = "3"
@@ -173,27 +164,6 @@ terraform output kubeconfig > ~/.kube/eks-cluster
 export KUBECONFIG=~/.kube/eks-cluster
 ```
 
-# Need to verify if this is still necessary in EKS platform v2
-# ### Authorize worker nodes
-# 
-# Get the config from terraform output, and save it to a yaml file:
-# 
-# ```bash
-# terraform output config-map > config-map-aws-auth.yaml
-# ```
-# 
-# Configure aws cli with a user account having appropriate access and apply the config map to EKS cluster:
-# 
-# ```bash
-# kubectl apply -f config-map-aws-auth.yaml
-# ```
-# 
-# You can verify the worker nodes are joining the cluster
-# 
-# ```bash
-# kubectl get nodes --watch
-# ```
-
 ### Authorize users to access the cluster
 
 Initially, only the system that deployed the cluster will be able to access the cluster. To authorize other users for accessing the cluster, `aws-auth` config needs to be modified by using the steps given below:
@@ -239,6 +209,7 @@ data:
 ```bash
 kubectl create clusterrolebinding ops-user-cluster-admin-binding-<username> --clusterrole=cluster-admin --user=<username>
 ```
+
 Replace the placeholder with proper values
 
 ### Cleaning up
